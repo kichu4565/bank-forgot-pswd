@@ -1,0 +1,269 @@
+.scrolling-banner {
+    position: fixed; 
+    top: 0;          
+    left: 0;
+    width: 100%;
+    background-color: transparent; 
+    overflow: hidden; 
+    z-index: 1000;    
+  }
+  marquee {
+    color: yellow;               
+    font-size: 21px;       
+    padding: 5px 0;           
+  }
+  .scrolling-text {
+    white-space: nowrap;
+    color: white;       
+    font-size: 18px;    
+    padding: 10px 0;    
+    background-color: transparent; 
+  }
+  
+  
+  .welcome-container {
+    padding-top: 70px; 
+    position: relative;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  .welcome-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/assets/18799261_8785688841847.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(2px);
+    z-index: 0;
+  }
+  
+  .welcome-container h1,
+  .welcome-container h2,
+  .welcome-container h3,
+  .welcome-container .button-group,
+  .welcome-container .divider,
+  .welcome-container .info-text {
+    position: relative;
+    z-index: 1;
+  }
+  
+  h1 {
+    font-size: 54px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: rgb(245, 51, 109);
+  }
+  
+  h2 {
+    font-size: 48px;
+    margin-bottom: 50px;
+    margin-top: -10px;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  h3{
+    font-size: 20px;
+    margin-bottom: 50px;
+    margin-top: -40px;
+    color: rgb(19, 4, 9);
+  }
+  
+  .button-group {
+    margin: 20px 0;
+  }
+  
+  .login-btn,
+  .signup-btn {
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 25px;
+    margin: 0 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+  }
+  
+  .login-btn {
+    background-color: rgb(17, 111, 17);
+    color: white;
+  }
+  
+  .signup-btn {
+    background-color: rgb(0, 102, 255);
+    color: white;
+  }
+  
+  .login-btn:hover {
+    transform: translateY(-2px);
+    background-color: rgb(12, 75, 12);
+  }
+  
+  .signup-btn:hover {
+    transform: translateY(-2px);
+    background-color: rgb(4, 71, 173);
+  }
+  
+  .divider {
+    margin: 40px auto;
+    width: 30%;
+    height: 2px;
+    background-color: rgb(230, 228, 228);
+  }
+  
+  .info-text h2 {
+    font-size: 40px;
+    font-family: 'Georgia', serif;
+    line-height: 1.4;
+  }
+
+body, .welcome-hero {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.welcome-hero {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 480px;
+  margin: 2rem auto;
+  text-align: center;
+  animation: fadeInUp 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.brand-logo {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.cloud {
+  color: #2196f3;
+}
+.vault {
+  color: #43b96f;
+  margin-left: 0.2rem;
+}
+
+.welcome-main {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #2196f3;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.tagline {
+  font-size: 1.15rem;
+  color: #444;
+  margin-bottom: 1.2rem;
+  font-weight: 500;
+}
+
+.modern-banking {
+  font-size: 1.1rem;
+  color: #222;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.btn {
+  min-width: 110px;
+  font-size: 1rem;
+  font-family: inherit;
+  border-radius: 25px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.08);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn-success {
+  background: linear-gradient(90deg, #43b96f 0%, #2196f3 100%);
+  color: #fff;
+}
+.btn-primary {
+  background: linear-gradient(90deg, #2196f3 0%, #43b96f 100%);
+  color: #fff;
+}
+.btn-success:hover, .btn-primary:hover {
+  transform: translateY(-2px) scale(1.04);
+  filter: brightness(1.1);
+}
+
+.divider {
+  margin: 2.5rem auto 2rem auto;
+  width: 60%;
+  height: 2px;
+  background: #e0eafc;
+}
+
+.info-text {
+  color: #2196f3;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1.2rem;
+}
+
+@media (max-width: 700px) {
+  .glass-effect { padding: 1.2rem; }
+  .brand-logo { font-size: 1.5rem; }
+  .welcome-main { font-size: 1.5rem; }
+  .info-text { font-size: 1rem; }
+}
+
+.tagline-secondary {
+  color: #2196f3;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.5px;
+}
+
+/* Remove old .info-title and .info-text headline styles if not needed */
+.info-title, .info-text h2 {
+  display: none;
+}

@@ -1,0 +1,268 @@
+<div class="container fade-in">
+  <div class="transaction-header">
+    <h1>Money Transfer</h1>
+    <p>Transfer money to other accounts securely</p>
+  </div>
+
+  <div class="transaction-grid">
+    <!-- Transfer Form -->
+    <div class="transaction-card">
+      <h2>New Transfer</h2>
+      <form [formGroup]="transferForm" (ngSubmit)="onSubmit()" class="transfer-form">
+        <div class="form-group">
+          <label for="recipientAccount">Recipient Account Number</label>
+          <input
+            type="text"
+            id="recipientAccount"
+            formControlName="recipientAccount"
+            class="form-control"
+            placeholder="Enter recipient's account number"
+          >
+          <div *ngIf="transferForm.get('recipientAccount')?.errors?.['required'] && transferForm.get('recipientAccount')?.touched" class="error-message">
+            Recipient account number is required
+          </div>
+          <div *ngIf="recipientName" class="recipient-name-container">
+            <div class="recipient-name-card">
+              <i class="fas fa-user-circle"></i>
+              <div class="recipient-details">
+                <span class="label">Recipient Name</span>
+                <span class="value">{{ recipientName }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="amount">Amount (₹)</label>
+          <input
+            type="number"
+            id="amount"
+            formControlName="amount"
+            class="form-control"
+            placeholder="Enter amount"
+          >
+          <div *ngIf="transferForm.get('amount')?.errors?.['required'] && transferForm.get('amount')?.touched" class="error-message">
+            Amount is required
+          </div>
+          <div *ngIf="transferForm.get('amount')?.errors?.['min'] && transferForm.get('amount')?.touched" class="error-message">
+            Minimum amount is ₹1
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            class="form-control"
+            rows="3"
+            placeholder="Enter transfer description"
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="!transferForm.valid || loading">
+            <span *ngIf="loading" class="spinner"></span>
+            <span *ngIf="!loading">Transfer Money</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="transaction-card">
+      <h2>Recent Transactions</h2>
+      <div class="transaction-filters">
+        <div class="form-group">
+          <label for="dateRange">Date Range</label>
+          <select id="dateRange" class="form-control" (change)="onDateRangeChange($event)">
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+            <option value="90">Last 90 days</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="transaction-list">
+        <div *ngIf="transactions.length === 0" class="no-transactions">
+          No transactions found
+        </div>
+        <div *ngFor="let transaction of transactions" class="transaction-item">
+          <div class="transaction-info">
+            <div class="transaction-type">
+              {{ transaction.transactionType }}
+              <span class="transaction-date">{{ transaction.transactionDate | date:'medium' }}</span>
+            </div>
+            <div class="transaction-description">{{ transaction.description }}</div>
+          </div>
+          <div class="transaction-amount" [ngClass]="transaction.transactionType === 'CREDIT' ? 'credit' : 'debit'">
+            {{ transaction.transactionType === 'CREDIT' ? '+' : '-' }}₹{{ transaction.amount | number:'1.2-2' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Dialog -->
+<div *ngIf="showConfirmation && confirmationDetails" class="confirmation-dialog">
+  <div class="confirmation-content">
+    <h2>Transfer Successful!</h2>
+    <div class="confirmation-details">
+      <div><strong>Recipient Name:</strong> {{ confirmationDetails.recipientName || 'N/A' }}</div>
+      <div><strong>Recipient Account:</strong> {{ confirmationDetails.recipientAccount }}</div>
+      <div><strong>Amount:</strong> ₹{{ confirmationDetails.amount }}</div>
+      <div><strong>Description:</strong> {{ confirmationDetails.description }}</div>
+      <div><strong>Transaction ID:</strong> {{ confirmationDetails.transactionId }}</div>
+    </div>
+    <button class="btn btn-success" (click)="showConfirmation = false">Close</button>
+  </div>
+</div>
+
+<style>
+  .responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+  }
+  .responsive-table th, .responsive-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  .responsive-table th {
+    background: #f2f2f2;
+  }
+  .debit { color: #d9534f; }
+  .credit { color: #5cb85c; }
+  @media (max-width: 600px) {
+    .responsive-table, .responsive-table thead, .responsive-table tbody, .responsive-table th, .responsive-table td, .responsive-table tr {
+      display: block;
+    }
+    .responsive-table tr { margin-bottom: 1rem; }
+    .responsive-table td {
+      text-align: right;
+      padding-left: 50%;
+      position: relative;
+    }
+    .responsive-table td:before {
+      position: absolute;
+      left: 0;
+      width: 45%;
+      white-space: nowrap;
+      font-weight: bold;
+      text-align: left;
+      content: attr(data-label);
+    }
+  }
+  .recipient-name-container {
+    margin: 12px 0;
+    padding: 4px 0;
+  }
+
+  .recipient-name-card {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(145deg, #f8f9fa, #ffffff);
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 12px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+
+  .recipient-name-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .recipient-name-card i {
+    font-size: 24px;
+    color: #5cb85c;
+    margin-right: 16px;
+  }
+
+  .recipient-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .recipient-details .label {
+    font-size: 0.85rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .recipient-details .value {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  @media (max-width: 576px) {
+    .recipient-name-card {
+      padding: 10px 12px;
+    }
+    
+    .recipient-name-card i {
+      font-size: 20px;
+      margin-right: 12px;
+    }
+
+    .recipient-details .value {
+      font-size: 1rem;
+    }
+  }
+  .confirmation-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .confirmation-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    text-align: center;
+    min-width: 320px;
+    max-width: 90vw;
+    animation: pop-in 0.3s cubic-bezier(.68,-0.55,.27,1.55);
+  }
+  .confirmation-content h2 {
+    color: #5cb85c;
+    margin-bottom: 1rem;
+  }
+  .confirmation-details {
+    text-align: left;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+  }
+  .btn-success {
+    background: linear-gradient(90deg, #36d1c4 0%, #5cb85c 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-success:hover {
+    background: linear-gradient(90deg, #5cb85c 0%, #36d1c4 100%);
+  }
+  @keyframes pop-in {
+    0% { transform: scale(0.7); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+</style>

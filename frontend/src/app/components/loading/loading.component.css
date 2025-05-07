@@ -1,0 +1,41 @@
+.loading-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, rgb(255, 236, 210), rgb(252, 182, 159));
+    font-family: Arial, sans-serif;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .spinner {
+    border: 8px solid rgb(243, 243, 243);
+    border-top: 8px solid rgb(52, 152, 219);
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+  }
+  
+  .loading-container p {
+    font-size: 18px;
+    color: rgb(51, 51, 51);
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }

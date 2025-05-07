@@ -1,0 +1,97 @@
+<div class="container fade-in">
+  <div class="dashboard-card">
+    <h2>Open a Fixed Deposit</h2>
+    <form [formGroup]="fdForm" (ngSubmit)="onSubmit()" class="transfer-form">
+      <div class="form-group">
+        <label for="principalAmount">Amount (₹)</label>
+        <input type="number" id="principalAmount" formControlName="principalAmount" min="500" class="form-control" />
+        <div class="error-message" *ngIf="fdForm.get('principalAmount')?.invalid && (fdForm.get('principalAmount')?.dirty || fdForm.get('principalAmount')?.touched)">
+          <div *ngIf="fdForm.get('principalAmount')?.errors?.['required']">Amount is required.</div>
+          <div *ngIf="fdForm.get('principalAmount')?.errors?.['min']">Minimum is ₹500.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="termMonths">Term (months)</label>
+        <input type="number" id="termMonths" formControlName="termMonths" min="6" class="form-control" />
+        <div class="error-message" *ngIf="fdForm.get('termMonths')?.invalid && (fdForm.get('termMonths')?.dirty || fdForm.get('termMonths')?.touched)">
+          <div *ngIf="fdForm.get('termMonths')?.errors?.['required']">Term is required.</div>
+          <div *ngIf="fdForm.get('termMonths')?.errors?.['min']">Minimum is 6 months.</div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="fdForm.invalid || isLoading">
+          <span *ngIf="isLoading" class="spinner"></span>
+          <span *ngIf="!isLoading">Create FD</span>
+        </button>
+      </div>
+    </form>
+    <div class="alert alert-success" *ngIf="message">{{ message }}</div>
+    <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+  </div>
+
+  <div class="dashboard-card">
+    <h3>Your Fixed Deposits</h3>
+    <div *ngIf="isListLoading">Loading...</div>
+    <table *ngIf="!isListLoading && fds.length > 0" class="responsive-table">
+      <thead>
+        <tr>
+          <th>FD Number</th>
+          <th>Amount</th>
+          <th>Interest Rate (%)</th>
+          <th>Term (months)</th>
+          <th>Maturity Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let fd of fds">
+          <td>{{ fd.fdAccountNumber }}</td>
+          <td>₹{{ fd.principalAmount }}</td>
+          <td>{{ fd.interestRate }}</td>
+          <td>{{ fd.termMonths }}</td>
+          <td>{{ fd.maturityDate | date:'shortDate' }}</td>
+          <td>{{ fd.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!isListLoading && fds.length === 0" class="no-transactions">
+      No fixed deposits found.
+    </div>
+  </div>
+</div>
+
+<style>
+  .responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+  }
+  .responsive-table th, .responsive-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  .responsive-table th {
+    background: #f2f2f2;
+  }
+  @media (max-width: 600px) {
+    .responsive-table, .responsive-table thead, .responsive-table tbody, .responsive-table th, .responsive-table td, .responsive-table tr {
+      display: block;
+    }
+    .responsive-table tr { margin-bottom: 1rem; }
+    .responsive-table td {
+      text-align: right;
+      padding-left: 50%;
+      position: relative;
+    }
+    .responsive-table td:before {
+      position: absolute;
+      left: 0;
+      width: 45%;
+      white-space: nowrap;
+      font-weight: bold;
+      text-align: left;
+      content: attr(data-label);
+    }
+  }
+</style>

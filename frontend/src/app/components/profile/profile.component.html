@@ -1,0 +1,20 @@
+<div class="container fade-in">
+  <div class="dashboard-card">
+    <h2>My Profile</h2>
+    <div *ngIf="isLoading" class="text-center">Loading...</div>
+    <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+    <div *ngIf="accountDetails && !isLoading">
+      <div class="profile-info">
+        <div class="profile-row"><label>Account Number:</label> <span>{{ accountDetails.accountNumber }}</span></div>
+        <div class="profile-row"><label>Name:</label> <span>{{ accountDetails.accountHolderName }}</span></div>
+        <div class="profile-row"><label>Phone:</label> <span>{{ accountDetails.phoneNumber }}</span></div>
+        <div class="profile-row"><label>Permanent Address:</label> <span>{{ accountDetails.permanentAddress }}</span></div>
+        <div class="profile-row"><label>Government ID:</label> <span>{{ accountDetails.governmentIssuedID }}</span></div>
+        <div class="profile-row"><label>ID Number:</label> <span>{{ accountDetails.idNumber }}</span></div>
+        <div class="profile-row"><label>Account Type:</label> <span>{{ accountDetails.accountType }}</span></div>
+        <div class="profile-row"><label>Balance:</label> <span>₹{{ accountDetails.balance }}</span></div>
+        <div class="profile-row"><label>Account Created:</label> <span>{{ accountDetails.accountCreationDate | date:'short' }}</span></div>
+      </div>
+    </div>
+  </div>
+</div>

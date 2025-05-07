@@ -1,0 +1,37 @@
+<div class="container fade-in">
+  <div class="dashboard-card">
+    <h2>Download Account Statement</h2>
+    <form [formGroup]="statementForm" (ngSubmit)="downloadStatement()" class="transfer-form">
+      <div class="form-group">
+        <label for="fromDate">From Date</label>
+        <mat-form-field appearance="fill" class="full-width">
+          <input matInput [matDatepicker]="fromPicker" id="fromDate" formControlName="fromDate" placeholder="From date" />
+          <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fromPicker></mat-datepicker>
+        </mat-form-field>
+        <div class="error-message" *ngIf="statementForm.get('fromDate')?.invalid && (statementForm.get('fromDate')?.dirty || statementForm.get('fromDate')?.touched)">
+          <div *ngIf="statementForm.get('fromDate')?.errors?.['required']">From date is required.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="toDate">To Date</label>
+        <mat-form-field appearance="fill" class="full-width">
+          <input matInput [matDatepicker]="toPicker" id="toDate" formControlName="toDate" placeholder="To date" />
+          <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+          <mat-datepicker #toPicker></mat-datepicker>
+        </mat-form-field>
+        <div class="error-message" *ngIf="statementForm.get('toDate')?.invalid && (statementForm.get('toDate')?.dirty || statementForm.get('toDate')?.touched)">
+          <div *ngIf="statementForm.get('toDate')?.errors?.['required']">To date is required.</div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="statementForm.invalid || isLoading">
+          <span *ngIf="isLoading" class="spinner"></span>
+          <span *ngIf="!isLoading">Download PDF</span>
+        </button>
+      </div>
+    </form>
+    <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+    <div *ngIf="isLoading" class="text-center">Downloading...</div>
+  </div>
+</div>

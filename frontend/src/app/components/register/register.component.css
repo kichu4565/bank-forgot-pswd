@@ -1,0 +1,209 @@
+.register-container {
+    min-height: 100vh;
+    background: linear-gradient(to right, #43cea2, #185a9d);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 1s ease-in;
+  }
+  
+  .register-card {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    width: 450px;
+  }
+  .register-card h2 {
+    color: rgb(29, 39, 126);
+    padding: 20px 0 20px 40px;
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 500;
+  }
+  
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 4px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  textarea {
+    resize: none;
+    height: 60px;
+  }
+  
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: #185a9d;
+    outline: none;
+  }
+  
+  #btn:disabled {
+    cursor: not-allowed;
+    background-color: rgb(212, 214, 214);
+    background-image: none;
+  }
+  
+  .register-card button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+    background-color: #185a9d;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .register-card button:hover {
+    background-color: #134a7f;
+  }
+  
+  .confirmation-container {
+    min-height: 100vh;
+    background: linear-gradient(to right, #43cea2, #71a9e0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 1s ease-in;
+  }
+  
+  .confirmation-card {
+    background: rgb(207, 205, 205);
+    width: 400px;
+    margin: 50px auto;
+    padding: 25px;
+    text-align: center;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.8s ease;
+  }
+  
+  .confirmation-card h2 {
+    color: green;
+  }
+  
+  .confirmation-card p {
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0 }
+    to { opacity: 1 }
+  }
+  
+  .error {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  
+  .back-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #185a9d;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  
+  .back-btn:hover {
+    background-color: #134a7f;
+  }
+  
+  .account-success-card.glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 2.5rem 2rem 2rem 2rem;
+    max-width: 520px;
+    margin: 2rem auto;
+    text-align: center;
+    animation: fadeInUp 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .success-icon {
+    margin-bottom: 1.2rem;
+  }
+  .success-title {
+    color: #2196f3;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+  }
+  .success-details {
+    text-align: left;
+    margin-bottom: 1.5rem;
+    font-size: 1.08rem;
+    color: #222;
+    background: rgba(255,255,255,0.5);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.08);
+  }
+  .generated-password {
+    font-family: 'Fira Mono', 'Consolas', monospace;
+    color: #2196f3;
+    font-weight: 700;
+    background: #e0eafc;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  .success-message {
+    color: #43b96f;
+    font-weight: 600;
+    margin-top: 0.8rem;
+  }
+  .account-success-card .btn {
+    margin-top: 1.2rem;
+    min-width: 160px;
+    font-size: 1.1rem;
+    border-radius: 25px;
+    padding: 12px 24px;
+    background: linear-gradient(90deg, #2196f3 0%, #43b96f 100%);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.08);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .account-success-card .btn:hover {
+    transform: translateY(-2px) scale(1.04);
+    filter: brightness(1.1);
+  }
+  .highlight {
+    color: #2196f3;
+    font-weight: 700;
+    background: #e0eafc;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 700px) {
+    .account-success-card.glass-effect { padding: 1.2rem; }
+    .success-title { font-size: 1.3rem; }
+    .success-details { font-size: 0.98rem; }
+  }
+  
