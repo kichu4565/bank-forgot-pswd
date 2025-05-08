@@ -27,4 +27,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     List<Transaction> findBySourceAccountNumberOrderByTimestampDesc(String accountNumber);
     
     List<Transaction> findByDestinationAccountNumberOrderByTimestampDesc(String accountNumber);
+
+    List<Transaction> findBySourceAccountNumberOrDestinationAccountNumberAndTimestampBetween(
+        String accountNumber1, String accountNumber2, LocalDateTime start, LocalDateTime end);
 } 

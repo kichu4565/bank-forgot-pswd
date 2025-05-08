@@ -1,92 +1,95 @@
 <div class="container fade-in" *ngIf="!created">
-  <div class="dashboard-card">
-    <h2>Create New Account</h2>
-    <form [formGroup]="registerForm" (ngSubmit)="onCreate()" class="transfer-form">
-      <div class="form-group">
-        <label for="fullName">Full Name</label>
+  <div class="register-modern-card">
+    <h2 class="register-title">Create New Bank Account</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onCreate()" class="register-modern-form">
+      <div class="section-title">Personal Info</div>
+      <div class="input-group">
+        <span class="input-icon"><i class="fas fa-user"></i></span>
         <input type="text" id="fullName" formControlName="fullName" class="form-control" placeholder="Full Name" />
-        <div class="error-message" *ngIf="fullName?.invalid && (fullName?.dirty || fullName?.touched)">Name is required</div>
       </div>
-      <div class="form-group">
-        <label for="dateOfBirth">Date of Birth</label>
-        <mat-form-field appearance="fill" class="full-width">
-          <input matInput [matDatepicker]="picker" id="dateOfBirth" formControlName="dateOfBirth" placeholder="Choose a date" />
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <div class="error-message" *ngIf="dateOfBirth?.invalid && (dateOfBirth?.dirty || dateOfBirth?.touched)">Date of Birth is required</div>
+      <div class="error-message" *ngIf="fullName?.invalid && (fullName?.dirty || fullName?.touched)">Name is required</div>
+
+      <div class="input-group">
+        <span class="input-icon"><i class="fas fa-calendar-alt"></i></span>
+        <input matInput [matDatepicker]="picker" id="dateOfBirth" formControlName="dateOfBirth" placeholder="Date of Birth" [max]="maxDate" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
       </div>
-      <div class="form-group">
-        <label for="nationality">Nationality</label>
-        <select id="nationality" formControlName="nationality" class="form-control">
-          <option value="India">India</option>
+      <div class="error-message" *ngIf="dateOfBirth?.invalid && (dateOfBirth?.dirty || dateOfBirth?.touched)">
+        <ng-container *ngIf="dateOfBirth?.errors?.['required']">Date of Birth is required</ng-container>
+        <ng-container *ngIf="dateOfBirth?.errors?.['minAge']">You must be at least 15 years old to create the account</ng-container>
+      </div>
+
+      <div class="section-title">Contact Info</div>
+      <div class="input-group">
+        <span class="input-icon"><i class="fas fa-phone"></i></span>
+        <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control" placeholder="Mobile Number (Exactly 10 digits)" />
+      </div>
+      <div class="error-message" *ngIf="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)">Enter a valid 10-digit phone number</div>
+
+      <div class="input-group">
+        <span class="input-icon"><i class="fas fa-home"></i></span>
+        <input type="text" id="permanentAddress" formControlName="permanentAddress" class="form-control" placeholder="Permanent Address" />
+      </div>
+      <div class="error-message" *ngIf="permanentAddress?.invalid && (permanentAddress?.dirty || permanentAddress?.touched)">Address is required (min 10 characters)</div>
+
+      <div class="section-title">Identity Proof</div>
+      <div class="input-group">
+        <span class="input-icon"><i class="fas fa-id-card"></i></span>
+        <select id="governmentIssuedID" formControlName="governmentIssuedID" class="form-control" (change)="onIdTypeChange($event)">
+          <option value="aadhaar">Aadhaar Card</option>
+          <option value="pan">PAN Card</option>
+          <option value="passport">Passport</option>
         </select>
       </div>
-      <div class="form-group">
-        <label for="phoneNumber">Phone Number</label>
-        <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control" placeholder="+91-1234567890" />
-        <div class="error-message" *ngIf="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)">Enter a valid 10-digit phone number</div>
+      <div class="error-message" *ngIf="governmentIssuedID?.invalid && (governmentIssuedID?.dirty || governmentIssuedID?.touched)">Please select a Government ID</div>
+
+      <div class="input-group">
+        <span class="input-icon"><i class="fas fa-id-badge"></i></span>
+        <input type="text" id="idNumber" formControlName="idNumber" class="form-control" [placeholder]="idNumberPlaceholder" />
       </div>
-      <div class="form-group">
-        <label for="permanentAddress">Permanent Address</label>
-        <textarea id="permanentAddress" formControlName="permanentAddress" class="form-control" placeholder="Permanent Address"></textarea>
-        <div class="error-message" *ngIf="permanentAddress?.invalid && (permanentAddress?.dirty || permanentAddress?.touched)">Address is required (min 10 characters)</div>
-      </div>
-      <div class="form-group">
-        <label for="governmentIssuedID">Government ID</label>
-        <select id="governmentIssuedID" formControlName="governmentIssuedID" class="form-control">
-          <option value="">Select ID</option>
-          <option value="Adhar Card Number">Aadhar Card</option>
-          <option value="Pan Card Number">PAN Card</option>
-          <option value="Passport Number">Passport</option>
-        </select>
-        <div class="error-message" *ngIf="governmentIssuedID?.invalid && (governmentIssuedID?.dirty || governmentIssuedID?.touched)">Please select a Government ID</div>
-      </div>
-      <div class="form-group">
-        <label for="idNumber">ID Number</label>
-        <input type="text" id="idNumber" formControlName="idNumber" class="form-control" placeholder="ID Number" />
-        <div class="error-message" *ngIf="idNumber?.invalid && (idNumber?.dirty || idNumber?.touched)">ID Number is required (min 6 characters)</div>
-      </div>
-      <div class="form-group">
-        <label for="accountType">Account Type</label>
+      <div class="error-message" *ngIf="idNumber?.invalid && (idNumber?.dirty || idNumber?.touched)">{{ idNumberError }}</div>
+
+      <div class="section-title">Bank Details</div>
+      <div class="input-group">
+        <span class="input-icon"><i class="fas fa-university"></i></span>
         <select id="accountType" formControlName="accountType" class="form-control">
-          <option value="SAVINGS">SAVINGS</option>
-          <option value="CURRENT">CURRENT</option>
+          <option value="SAVINGS">Saving Account</option>
         </select>
-        <div class="error-message" *ngIf="accountType?.invalid && (accountType?.dirty || accountType?.touched)">Please select an account type</div>
       </div>
-      <div class="form-group">
-        <label for="initialDeposit">Initial Deposit (₹)</label>
-        <input type="number" id="initialDeposit" formControlName="initialDeposit" class="form-control" />
-        <div class="error-message" *ngIf="initialDeposit?.invalid && (initialDeposit?.dirty || initialDeposit?.touched)">Minimum deposit is ₹500</div>
+      <div class="error-message" *ngIf="accountType?.invalid && (accountType?.dirty || accountType?.touched)">Please select an account type</div>
+
+      <div class="input-group">
+        <span class="input-icon"><i class="fas fa-rupee-sign"></i></span>
+        <input type="number" id="initialDeposit" formControlName="initialDeposit" class="form-control" placeholder="Initial Deposit (₹)" />
       </div>
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Create Account</button>
-      </div>
+      <div class="error-message" *ngIf="initialDeposit?.invalid && (initialDeposit?.dirty || initialDeposit?.touched)">Minimum deposit is ₹500</div>
+
+      <button type="submit" class="btn-gradient" [disabled]="registerForm.invalid">Create Account</button>
     </form>
   </div>
 </div>
 
 <div class="container fade-in" *ngIf="created">
-  <div class="dashboard-card account-success-card glass-effect">
-    <div class="success-icon">
-      <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#43b96f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2l4-4"/></svg>
+  <div class="dashboard-card account-success-card glass-effect" style="max-width: 420px; margin: 2rem auto; text-align: center;">
+    <div class="success-icon" style="margin-bottom: 1.2rem;">
+      <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#43b96f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2l4-4"/></svg>
     </div>
-    <h2 class="success-title">Successfully Created Account</h2>
-    <div class="success-details">
-      <div><b>Account Number:</b> <span class="highlight">{{ backendResponse?.accountDetails?.accountNumber }}</span></div>
-      <div><b>Name:</b> {{ backendResponse?.accountDetails?.accountHolderName }}</div>
-      <div><b>Account Created:</b> {{ backendResponse?.accountDetails?.accountCreationDate | date:'yyyy-MM-dd' }}</div>
-      <div><b>Phone:</b> {{ backendResponse?.accountDetails?.phoneNumber }}</div>
-      <div><b>Account Type:</b> {{ backendResponse?.accountDetails?.accountType }}</div>
-      <div><b>Balance:</b> <span class="highlight">₹{{ backendResponse?.accountDetails?.balance }}</span></div>
-      <div><b>Permanent Address:</b> {{ backendResponse?.accountDetails?.permanentAddress }}</div>
-      <div><b>Government ID:</b> {{ backendResponse?.accountDetails?.governmentIssuedID }}</div>
-      <div><b>ID Number:</b> {{ backendResponse?.accountDetails?.idNumber }}</div>
-      <div><b>Generated Password:</b> <span class="generated-password">{{ backendResponse?.generatedPassword }}</span></div>
-      <div class="success-message">{{ backendResponse?.message }}</div>
+    <h2 class="success-title" style="color: #1976d2; font-size: 2rem; font-weight: 800; margin-bottom: 1.2rem;">Successfully Created Account</h2>
+    <div style="background: #f8fafc; border-radius: 16px; box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.08); padding: 1.2rem 1.2rem 0.8rem 1.2rem; margin-bottom: 1.5rem; text-align: left;">
+      <div style="margin-bottom: 0.5rem;"><b>Account Number:</b> <span style="background: #e3f0ff; color: #1976d2; font-weight: 700; padding: 2px 8px; border-radius: 6px;">{{ backendResponse?.accountDetails?.accountNumber }}</span></div>
+      <div style="margin-bottom: 0.5rem;"><b>Name:</b> {{ backendResponse?.accountDetails?.accountHolderName }}</div>
+      <div style="margin-bottom: 0.5rem;"><b>Account Created:</b> {{ backendResponse?.accountDetails?.accountCreationDate | date:'yyyy-MM-dd' }}</div>
+      <div style="margin-bottom: 0.5rem;"><b>Phone:</b> {{ backendResponse?.accountDetails?.phoneNumber }}</div>
+      <div style="margin-bottom: 0.5rem;"><b>Account Type:</b> <span style="background: #e3f0ff; color: #1976d2; font-weight: 700; padding: 2px 8px; border-radius: 6px;">{{ backendResponse?.accountDetails?.accountType }}</span></div>
+      <div style="margin-bottom: 0.5rem;"><b>Permanent Address:</b> {{ backendResponse?.accountDetails?.permanentAddress }}</div>
+      <div style="margin-bottom: 0.5rem;"><b>Government ID:</b> {{ backendResponse?.accountDetails?.governmentIssuedID }}</div>
+      <div style="margin-bottom: 0.5rem;"><b>ID Number:</b> {{ backendResponse?.accountDetails?.idNumber }}</div>
+      <div style="margin-bottom: 0.5rem;"><b>Generated Password:</b> <span style="background: #e3f0ff; color: #1976d2; font-weight: 700; padding: 2px 8px; border-radius: 6px;">{{ backendResponse?.generatedPassword }}</span></div>
     </div>
-    <button class="btn btn-primary" (click)="goToLogin()">Back to Login Page</button>
+    <div class="success-message" style="color: #43b96f; font-weight: 600; margin-bottom: 1.2rem;">Bank account created successfully.</div>
+    <button class="btn btn-primary" style="font-size: 1.1rem; border-radius: 25px; padding: 12px 24px; background: #1976d2; color: #fff; min-width: 220px;" (click)="goToLogin()">Back to Login Page</button>
   </div>
 </div>
   

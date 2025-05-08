@@ -1,6 +1,9 @@
 <div class="container fade-in">
   <div class="dashboard-card">
-    <h2>Download Account Statement</h2>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 0.7rem; margin-bottom: 1.2rem;">
+      <span style="font-size: 1.6rem; font-weight: 800; color: #1976d2; letter-spacing: 1px;">CloudVault</span>
+    </div>
+    <h2 style="margin-bottom: 1.2rem; color: #222; font-size: 1.3rem; font-weight: 700;">Bank Statement</h2>
     <form [formGroup]="statementForm" (ngSubmit)="downloadStatement()" class="transfer-form">
       <div class="form-group">
         <label for="fromDate">From Date</label>
@@ -33,5 +36,6 @@
     </form>
     <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
     <div *ngIf="isLoading" class="text-center">Downloading...</div>
+    <!-- Transaction preview table will be added here in the next step -->
   </div>
 </div>

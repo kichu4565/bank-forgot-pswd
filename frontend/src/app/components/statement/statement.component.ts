@@ -14,6 +14,7 @@ export class StatementComponent {
   error = '';
   today = new Date().toISOString().split('T')[0];
   accountNumber = '';
+  transactions: any[] = [];
 
   constructor(private fb: FormBuilder, private apiService: ApiService) {
     this.accountNumber = localStorage.getItem('accountNumber') || '';
@@ -41,6 +42,25 @@ export class StatementComponent {
         },
         error: (err) => {
           this.error = err.error?.message || 'Failed to download statement.';
+          this.isLoading = false;
+        }
+      });
+    }
+  }
+
+  getTransactionsForRange() {
+    this.error = '';
+    if (this.statementForm.valid) {
+      this.isLoading = true;
+      const fromDate = this.statementForm.get('fromDate')?.value;
+      const toDate = this.statementForm.get('toDate')?.value;
+      this.apiService.getTransactionHistoryForRange(this.accountNumber, fromDate, toDate).subscribe({
+        next: (data: any[]) => {
+          this.transactions = data;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          this.error = err.error?.message || 'Failed to fetch transactions.';
           this.isLoading = false;
         }
       });

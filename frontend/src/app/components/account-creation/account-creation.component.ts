@@ -16,6 +16,13 @@ export class AccountCreationComponent implements OnInit {
   accountCreated = false;
   createdAccount: any = null;
 
+  public governmentIdTypes = [
+    { label: 'Aadhaar Card', value: 'aadhaar', placeholder: 'Enter your Aadhaar Card Number', pattern: '^[0-9]{12}$', error: 'Aadhaar number must be 12 digits.' },
+    { label: 'PAN Card', value: 'pan', placeholder: 'Enter your PAN Card Number', pattern: '^[A-Z]{5}[0-9]{4}[A-Z]{1}$', error: 'PAN must be 10 characters (e.g., ABCDE1234F).' },
+    { label: 'Passport', value: 'passport', placeholder: 'Enter your Passport Number', pattern: '^[A-PR-WYa-pr-wy][1-9][0-9]{6}$', error: 'Passport must be 8 characters (e.g., A1234567).' }
+  ];
+  public selectedIdType = this.governmentIdTypes[0];
+
   constructor(
     private formBuilder: FormBuilder,
     private accountService: AccountService,
@@ -27,7 +34,17 @@ export class AccountCreationComponent implements OnInit {
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       address: ['', [Validators.required, Validators.minLength(10)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      initialDeposit: ['', [Validators.required, Validators.min(0)]]
+      initialDeposit: ['', [Validators.required, Validators.min(0)]],
+      governmentIssuedID: [this.governmentIdTypes[0].value, Validators.required],
+      idNumber: ['', [Validators.required, Validators.pattern(this.governmentIdTypes[0].pattern)]],
+      accountType: ['Saving', Validators.required]
+    });
+
+    this.accountForm.get('governmentIssuedID')?.valueChanges.subscribe((type) => {
+      const idType = this.governmentIdTypes.find(t => t.value === type) || this.governmentIdTypes[0];
+      this.selectedIdType = idType;
+      this.accountForm.get('idNumber')?.setValidators([Validators.required, Validators.pattern(idType.pattern)]);
+      this.accountForm.get('idNumber')?.updateValueAndValidity();
     });
   }
 

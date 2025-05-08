@@ -27,8 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Only redirect if both token and accountNumber are present
-    if (localStorage.getItem('token') && localStorage.getItem('accountNumber')) {
+    if (this.authService.isLoggedIn()) {
       this.router.navigate(['/home']);
     }
   }

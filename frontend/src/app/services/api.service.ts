@@ -29,6 +29,10 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/transactions/history/${accountId}`);
   }
 
+  getTransactionHistoryForRange(accountNumber: string, fromDate: string, toDate: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/transactions/history/${accountNumber}?fromDate=${fromDate}&toDate=${toDate}`);
+  }
+
   // Authentication endpoints
   login(credentials: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/login`, credentials);

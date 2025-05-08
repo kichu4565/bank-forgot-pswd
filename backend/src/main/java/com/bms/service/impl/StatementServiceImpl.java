@@ -57,9 +57,8 @@ public class StatementServiceImpl implements StatementService {
         LocalDateTime endDate = request.getToDate().atTime(23, 59, 59);
         
         List<Transaction> transactions = transactionRepository
-                .findBySourceAccountNumberAndTimestampBetweenOrDestinationAccountNumberAndTimestampBetween(
-                        accountNumber, startDate, endDate,
-                        accountNumber, startDate, endDate
+                .findBySourceAccountNumberOrDestinationAccountNumberAndTimestampBetween(
+                        accountNumber, accountNumber, startDate, endDate
                 );
 
         // Get FD details
@@ -121,10 +120,12 @@ public class StatementServiceImpl implements StatementService {
     }
 
     private void addHeader(Document document, Account account, StatementRequest request) {
-        document.add(new Paragraph("BANK STATEMENT")
+        
+        document.add(new Paragraph("CloudVault Bank Statement")
                 .setTextAlignment(TextAlignment.CENTER)
                 .setBold()
-                .setFontSize(16));
+                .setFontSize(18));
+        
 
         document.add(new Paragraph("\nAccount Details:")
                 .setBold());
@@ -154,14 +155,14 @@ public class StatementServiceImpl implements StatementService {
             Table table = new Table(5);
             table.setWidth(500);
 
-            // Add table headers
+            
             table.addHeaderCell(new Cell().add(new Paragraph("FD Number")));
             table.addHeaderCell(new Cell().add(new Paragraph("Amount")));
             table.addHeaderCell(new Cell().add(new Paragraph("Interest Rate")));
             table.addHeaderCell(new Cell().add(new Paragraph("Maturity Date")));
             table.addHeaderCell(new Cell().add(new Paragraph("Status")));
 
-            // Add FD rows
+            
             for (FixedDeposit fd : fixedDeposits) {
                 table.addCell(new Cell().add(new Paragraph(fd.getFdAccountNumber())));
                 table.addCell(new Cell().add(new Paragraph("₹" + fd.getPrincipalAmount())));
@@ -182,14 +183,14 @@ public class StatementServiceImpl implements StatementService {
         Table table = new Table(5);
         table.setWidth(500);
 
-        // Add table headers
+      
         table.addHeaderCell(new Cell().add(new Paragraph("Date")));
         table.addHeaderCell(new Cell().add(new Paragraph("Description")));
         table.addHeaderCell(new Cell().add(new Paragraph("Debit")));
         table.addHeaderCell(new Cell().add(new Paragraph("Credit")));
         table.addHeaderCell(new Cell().add(new Paragraph("Balance")));
 
-        // Add transaction rows
+       
         for (Transaction transaction : transactions) {
             table.addCell(new Cell().add(new Paragraph(
                     transaction.getTimestamp().format(DATE_TIME_FORMATTER))));

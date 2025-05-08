@@ -7,12 +7,8 @@
     <div class="tagline">Your Money, Your Future, <b>Your CloudVault</b></div>
     <div class="modern-banking">Modern Banking. Secure. Effortless.</div>
     <div class="button-group">
-      <a routerLink="/login">
-        <button class="btn btn-success login-btn">Login</button>
-      </a>
-      <a routerLink="/register">
-        <button class="btn btn-primary signup-btn">Sign Up</button>
-      </a>
+      <button class="btn btn-success login-btn" (click)="navigateTo('login')">Login</button>
+      <button class="btn btn-primary signup-btn" (click)="navigateTo('register')">Sign Up</button>
     </div>
     <div class="divider"></div>
     <div class="info-text tagline-secondary">Easy. Secure. Always On</div>
