@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
-import { catchError } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -22,8 +22,30 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(cloned).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          this.authService.logout();
-          this.router.navigate(['/login']);
+          // Try to refresh the token
+          return this.authService.refreshToken().pipe(
+            switchMap((response: any) => {
+              if (response && response.token) {
+                localStorage.setItem('token', response.token);
+                // Retry the original request with the new token
+                const newReq = req.clone({
+                  setHeaders: {
+                    Authorization: `Bearer ${response.token}`
+                  }
+                });
+                return next.handle(newReq);
+              } else {
+                this.authService.logout();
+                this.router.navigate(['/login']);
+                return throwError(() => error);
+              }
+            }),
+            catchError(err => {
+              this.authService.logout();
+              this.router.navigate(['/login']);
+              return throwError(() => err);
+            })
+          );
         }
         return throwError(() => error);
       })

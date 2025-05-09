@@ -8,6 +8,8 @@ import com.bms.repository.AccountRepository;
 import com.bms.service.AuthService;
 import com.bms.util.JwtUtil;
 import com.bms.util.PasswordUtil;
+import com.bms.service.RefreshTokenService;
+import com.bms.entity.RefreshToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private PasswordUtil passwordUtil;
 
+    @Autowired
+    private RefreshTokenService refreshTokenService;
+
     @Override
     public LoginResponse authenticate(LoginRequest request) {
         // Find account by account number
@@ -40,6 +45,9 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtUtil.generateToken(account.getAccountNumber());
         LocalDateTime tokenExpiry = LocalDateTime.now().plusHours(1); // Token valid for 1 hour
 
+        // Generate refresh token
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(account.getAccountNumber());
+
         // Create and return response
         return new LoginResponse(
                 "Login successful",
@@ -47,7 +55,9 @@ public class AuthServiceImpl implements AuthService {
                 tokenExpiry,
                 account.getCustomer().getFullName(),
                 account.getAccountNumber(),
-                account.getBalance().doubleValue()
+                account.getBalance().doubleValue(),
+                refreshToken.getToken(),
+                refreshToken.getExpiryDate().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime()
         );
     }
 } 

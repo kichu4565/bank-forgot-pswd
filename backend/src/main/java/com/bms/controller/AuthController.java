@@ -6,6 +6,8 @@ import com.bms.dto.LogoutResponse;
 import com.bms.dto.TokenRefreshResponse;
 import com.bms.service.AuthService;
 import com.bms.util.JwtUtil;
+import com.bms.service.RefreshTokenService;
+import com.bms.entity.RefreshToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,6 +33,9 @@ public class AuthController {
     
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private RefreshTokenService refreshTokenService;
 
     @Operation(
         summary = "Login to the system",
@@ -63,8 +68,11 @@ public class AuthController {
         )
     )
     @PostMapping("/logout")
-    public ResponseEntity<LogoutResponse> logout() {
+    public ResponseEntity<LogoutResponse> logout(@RequestBody(required = false) String refreshToken) {
         SecurityContextHolder.clearContext();
+        if (refreshToken != null && !refreshToken.isBlank()) {
+            refreshTokenService.deleteByToken(refreshToken);
+        }
         return new ResponseEntity<>(
             new LogoutResponse("Logout successful"),
             HttpStatus.OK
@@ -84,22 +92,19 @@ public class AuthController {
         )
     )
     @PostMapping("/refresh-token")
-    public ResponseEntity<TokenRefreshResponse> refreshToken(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.substring(7); // Remove "Bearer " prefix
-        String accountNumber = jwtUtil.extractUsername(token);
-        
-        if (accountNumber != null && jwtUtil.validateToken(token, accountNumber)) {
+    public ResponseEntity<TokenRefreshResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
+        String refreshToken = request.getRefreshToken();
+        String accountNumber = request.getAccountNumber();
+        if (refreshTokenService.validateRefreshToken(refreshToken, accountNumber)) {
             String newToken = jwtUtil.generateToken(accountNumber);
             LocalDateTime tokenExpiry = LocalDateTime.now().plusHours(1);
-            
             return new ResponseEntity<>(
                 new TokenRefreshResponse("Token refreshed successfully", newToken, tokenExpiry),
                 HttpStatus.OK
             );
         }
-        
         return new ResponseEntity<>(
-            new TokenRefreshResponse("Invalid or expired token", null, null),
+            new TokenRefreshResponse("Invalid or expired refresh token", null, null),
             HttpStatus.UNAUTHORIZED
         );
     }

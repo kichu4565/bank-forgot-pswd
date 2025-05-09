@@ -30,4 +30,10 @@ public class LoginResponse {
 
     @Schema(description = "Current account balance", example = "10000.00")
     private double balance;
+
+    @Schema(description = "Refresh token for session renewal", example = "randomlyGeneratedRefreshTokenHere")
+    private String refreshToken;
+
+    @Schema(description = "Refresh token expiration time", example = "2024-05-10T15:30:00")
+    private LocalDateTime refreshTokenExpiry;
 } 

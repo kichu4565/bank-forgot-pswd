@@ -18,7 +18,8 @@ export class HomeComponent implements OnInit {
   transactions: Transaction[] = [];
   loading: boolean = true;
   error: string | null = null;
-  private lastAnimatedBalance = 0;
+  displayedBalance: number = 0;
+  animationFrame: number | null = null;
 
   constructor(
     private router: Router,
@@ -29,7 +30,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountNumber = localStorage.getItem('accountNumber') || '';
-    this.lastAnimatedBalance = 0;
     if (this.accountNumber) {
       this.loadAccountDetails(this.accountNumber);
       this.loadRecentTransactions(this.accountNumber);
@@ -43,9 +43,9 @@ export class HomeComponent implements OnInit {
       next: (data: AccountDetails) => {
         this.accountDetails = data;
         this.loading = false;
-        setTimeout(() => {
-          this.animateBalance(data.balance);
-        }, 0);
+        const balance = Number(data.balance);
+        console.log('Animating balance to:', balance);
+        this.animateBalance(balance);
       },
       error: (error: any) => {
         this.error = 'Failed to load account details';
@@ -92,21 +92,22 @@ export class HomeComponent implements OnInit {
   }
 
   private animateBalance(target: number) {
-    const el = document.getElementById('balance-amount');
-    if (!el) return;
-    let start = this.lastAnimatedBalance;
-    this.lastAnimatedBalance = target;
+    if (this.animationFrame) {
+      cancelAnimationFrame(this.animationFrame);
+    }
+    let start = 0;
     const duration = 900;
     const startTime = performance.now();
     const animate = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const value = start + (target - start) * progress;
-      el.textContent = `₹${value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      this.displayedBalance = start + (target - start) * progress;
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        this.animationFrame = requestAnimationFrame(animate);
+      } else {
+        this.displayedBalance = target;
       }
     };
-    requestAnimationFrame(animate);
+    this.animationFrame = requestAnimationFrame(animate);
   }
 }

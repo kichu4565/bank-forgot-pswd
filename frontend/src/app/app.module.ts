@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,7 +19,6 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { HomeComponent } from './components/home/home.component';
 import { TestConnectionComponent } from './components/test-connection/test-connection.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from './services/api.service';
 import { TransactionComponent } from './components/transaction/transaction.component';
 import { FixedDepositComponent } from './components/fixed-deposit/fixed-deposit.component';
@@ -49,6 +50,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
     FormsModule,
     HttpClientModule,
     CommonModule,
+    RouterModule,
     NgbModule,
     MatDatepickerModule,
     MatInputModule,

@@ -18,18 +18,6 @@
             class="form-control"
             placeholder="Enter recipient's account number"
           >
-          <div *ngIf="transferForm.get('recipientAccount')?.errors?.['required'] && transferForm.get('recipientAccount')?.touched" class="error-message">
-            Recipient account number is required
-          </div>
-          <div *ngIf="recipientName" class="recipient-name-container">
-            <div class="recipient-name-card">
-              <i class="fas fa-user-circle"></i>
-              <div class="recipient-details">
-                <span class="label">Recipient Name</span>
-                <span class="value">{{ recipientName }}</span>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div class="form-group">
@@ -41,12 +29,6 @@
             class="form-control"
             placeholder="Enter amount"
           >
-          <div *ngIf="transferForm.get('amount')?.errors?.['required'] && transferForm.get('amount')?.touched" class="error-message">
-            Amount is required
-          </div>
-          <div *ngIf="transferForm.get('amount')?.errors?.['min'] && transferForm.get('amount')?.touched" class="error-message">
-            Minimum amount is ₹1
-          </div>
         </div>
 
         <div class="form-group">
@@ -101,21 +83,6 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- Confirmation Dialog -->
-<div *ngIf="showConfirmation && confirmationDetails" class="confirmation-dialog">
-  <div class="confirmation-content">
-    <h2>Transfer Successful!</h2>
-    <div class="confirmation-details">
-      <div><strong>Recipient Name:</strong> {{ confirmationDetails.recipientName || 'N/A' }}</div>
-      <div><strong>Recipient Account:</strong> {{ confirmationDetails.recipientAccount }}</div>
-      <div><strong>Amount:</strong> ₹{{ confirmationDetails.amount }}</div>
-      <div><strong>Description:</strong> {{ confirmationDetails.description }}</div>
-      <div><strong>Transaction ID:</strong> {{ confirmationDetails.transactionId }}</div>
-    </div>
-    <button class="btn btn-success" (click)="showConfirmation = false">Close</button>
   </div>
 </div>
 

@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   ) {
     this.loginForm = this.fb.group({
       accountNumber: ['', [Validators.required, Validators.pattern('^BANK[a-zA-Z0-9]{6}$')]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -43,8 +43,13 @@ export class LoginComponent implements OnInit {
 
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
-          localStorage.setItem('accountNumber', this.loginForm.value.accountNumber);
-          this.router.navigate(['/home']);
+          if (response.token) {
+            localStorage.setItem('accountNumber', this.loginForm.value.accountNumber);
+            this.router.navigate(['/home']);
+          } else {
+            this.error = 'Login failed. No token received.';
+            this.loading = false;
+          }
         },
         error: (error) => {
           this.error = error.error?.message || 'Login failed. Please check your credentials.';

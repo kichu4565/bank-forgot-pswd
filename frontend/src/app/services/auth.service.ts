@@ -12,6 +12,8 @@ export interface LoginResponse {
   success: boolean;
   message: string;
   token?: string;
+  refreshToken?: string;
+  refreshTokenExpiry?: string;
 }
 
 @Injectable({
@@ -30,6 +32,12 @@ export class AuthService {
             localStorage.setItem('token', response.token);
             localStorage.setItem('accountNumber', credentials.accountNumber);
           }
+          if (response.refreshToken) {
+            localStorage.setItem('refreshToken', response.refreshToken);
+            if (response.refreshTokenExpiry) {
+              localStorage.setItem('refreshTokenExpiry', response.refreshTokenExpiry);
+            }
+          }
           observer.next(response);
           observer.complete();
         },
@@ -44,9 +52,28 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
+  getRefreshToken(): string | null {
+    return localStorage.getItem('refreshToken');
+  }
+
+  getAccountNumber(): string | null {
+    return localStorage.getItem('accountNumber');
+  }
+
+  refreshToken(): Observable<any> {
+    const refreshToken = this.getRefreshToken();
+    const accountNumber = this.getAccountNumber();
+    return this.http.post<any>(`${this.apiUrl}/refresh-token`, {
+      refreshToken,
+      accountNumber
+    });
+  }
+
   logout(): void {
     localStorage.removeItem('accountNumber');
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('refreshTokenExpiry');
   }
 
   isLoggedIn(): boolean {
