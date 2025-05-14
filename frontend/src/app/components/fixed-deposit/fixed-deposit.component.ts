@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-fixed-deposit',
@@ -17,7 +19,8 @@ export class FixedDepositComponent implements OnInit {
   error = '';
   accountNumber = '';
 
-  constructor(private fb: FormBuilder, private apiService: ApiService) {}
+  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router,
+) {}
 
   ngOnInit(): void {
     this.accountNumber = localStorage.getItem('accountNumber') || '';
@@ -66,6 +69,13 @@ export class FixedDepositComponent implements OnInit {
           this.isLoading = false;
         }
       });
+    }
+  }
+  logout() {
+    const confirmed = confirm('Do you want to exit?');
+    if (confirmed) {
+      localStorage.clear();
+      this.router.navigate(['/']);
     }
   }
 }

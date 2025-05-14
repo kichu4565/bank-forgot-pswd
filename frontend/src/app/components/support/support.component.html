@@ -1,3 +1,35 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="logo-flex logo" style="cursor:pointer;">
+      <img src="/assets/Home logo.png" alt="CloudVault Logo" class="logo-image" />
+    </div>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+    </label>
+    <ul class="nav-links">
+      <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
+      <li><a routerLink="/transaction" routerLinkActive="active">Transaction</a></li>
+      <li><a routerLink="/fixed-deposit" routerLinkActive="active">Fixed Deposit</a></li>
+      <li><a routerLink="/statement" routerLinkActive="active">Statement</a></li>
+      <li><a routerLink="/support" routerLinkActive="active">Support</a></li>
+      <li><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
+      <li>
+        <button class="logout-btn" (click)="logout()">
+          <span class="logout-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+          </span>
+          <span>Logout</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+</nav>
+
 <div class="container fade-in">
   <div class="dashboard-card">
     <h2>Contact Support</h2>

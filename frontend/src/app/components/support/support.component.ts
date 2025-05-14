@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-support',
@@ -13,7 +15,7 @@ export class SupportComponent {
   success: string | null = null;
   error: string | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private router: Router) {
     this.supportForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -32,5 +34,12 @@ export class SupportComponent {
       this.success = 'Your message has been sent! Our team will contact you soon.';
       this.supportForm.reset();
     }, 1200);
+  }
+  logout() {
+    const confirmed = confirm('Do you want to exit?');
+    if (confirmed) {
+      localStorage.clear();
+      this.router.navigate(['/']);
+    }
   }
 }

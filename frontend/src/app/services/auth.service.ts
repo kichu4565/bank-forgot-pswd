@@ -48,6 +48,10 @@ export class AuthService {
     });
   }
 
+  resetPassword(accNo: string, newPassword: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password`, { accNo, newPassword });
+  }
+
   getToken(): string | null {
     return localStorage.getItem('token');
   }
@@ -77,6 +81,6 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return !!this.getToken();
   }
-} 
+}

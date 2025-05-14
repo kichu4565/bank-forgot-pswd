@@ -6,12 +6,14 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoadingComponent } from './components/loading/loading.component';
-import { TestConnectionComponent } from './components/test-connection/test-connection.component';
 import { TransactionComponent } from './components/transaction/transaction.component';
 import { FixedDepositComponent } from './components/fixed-deposit/fixed-deposit.component';
 import { StatementComponent } from './components/statement/statement.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthGuard } from './services/auth.guard';
+import { SupportComponent } from './components/support/support.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -25,8 +27,8 @@ const routes: Routes = [
   { path: 'statement', component: StatementComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'loading', component: LoadingComponent, canActivate: [AuthGuard] },
-  { path: 'test-connection', component: TestConnectionComponent, canActivate: [AuthGuard] }
-  // { path: 'forgot', component: ForgotPasswordComponent } 
+  { path: 'support', component: SupportComponent },
+  { path: 'forgot', component: ForgotPasswordComponent } 
 ];
 
 @NgModule({

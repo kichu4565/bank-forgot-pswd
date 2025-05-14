@@ -18,7 +18,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { HomeComponent } from './components/home/home.component';
-import { TestConnectionComponent } from './components/test-connection/test-connection.component';
+// import { TestConnectionComponent } from './components/test-connection/test-connection.component';
 import { ApiService } from './services/api.service';
 import { TransactionComponent } from './components/transaction/transaction.component';
 import { FixedDepositComponent } from './components/fixed-deposit/fixed-deposit.component';
@@ -26,6 +26,7 @@ import { StatementComponent } from './components/statement/statement.component';
 import { SupportComponent } from './components/support/support.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -35,12 +36,13 @@ import { AuthInterceptor } from './services/auth.interceptor';
     RegisterComponent,
     LoadingComponent,
     HomeComponent,
-    TestConnectionComponent,
+    // TestConnectionComponent,
     TransactionComponent,
     FixedDepositComponent,
     StatementComponent,
     SupportComponent,
-    ProfileComponent
+    ProfileComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

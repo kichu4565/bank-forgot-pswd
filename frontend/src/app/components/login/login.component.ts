@@ -7,29 +7,37 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   standalone: false,
-  styleUrls: ['./login.component.css'] 
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
+  loginForm!: FormGroup;
+  showPassword: boolean = false;
   loading: boolean = false;
   error: string | null = null;
-  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {
+    private router: Router,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
     this.loginForm = this.fb.group({
       accountNumber: ['', [Validators.required, Validators.pattern('^BANK[a-zA-Z0-9]{6}$')]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
-  }
 
-  ngOnInit(): void {
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/home']);
     }
+  }
+
+  get accNo() {
+    return this.loginForm.get('accountNumber');
+  }
+
+  get pwd() {
+    return this.loginForm.get('password');
   }
 
   togglePassword(): void {
@@ -44,18 +52,18 @@ export class LoginComponent implements OnInit {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           if (response.token) {
-            localStorage.setItem('accountNumber', this.loginForm.value.accountNumber);
-            this.router.navigate(['/home']);
+            this.router.navigate(['/loading']);
           } else {
             this.error = 'Login failed. No token received.';
-            this.loading = false;
           }
+          this.loading = false;
         },
         error: (error) => {
           this.error = error.error?.message || 'Login failed. Please check your credentials.';
           this.loading = false;
         }
       });
+
     }
   }
 }

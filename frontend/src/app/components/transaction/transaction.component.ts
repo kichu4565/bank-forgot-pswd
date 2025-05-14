@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TransactionService, Transaction } from '../../services/transaction.service';
 import { AccountService } from '../../services/account.service';
-import { ChartOptions, ChartType, ChartData } from 'chart.js';
+// import { ChartOptions, ChartType, ChartData } from 'chart.js';
 
 @Component({
   selector: 'app-transaction',
@@ -21,35 +21,13 @@ export class TransactionComponent implements OnInit {
   recipientName: string | null = null;
   showConfirmation: boolean = false;
   confirmationDetails: any = null;
-  // Chart properties for Spending Overview
-  public spendingChartData: ChartData<'doughnut'> = {
-    labels: ['Received', 'Sent', 'Groceries', 'Other'],
-    datasets: [
-      {
-        data: [20, 35, 30, 15], // Example data, replace with real data
-        backgroundColor: ['#2196f3', '#43b96f', '#f09819', '#ff5858'],
-        borderColor: '#fff',
-        borderWidth: 2
-      }
-    ]
-  };
-  public spendingChartType: ChartType = 'doughnut';
-  public spendingChartOptions: ChartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false
-      }
-    }
-  };
-  sentToday: number = 0; // Example value, replace with real logic
-  dailyLimit: number = 100000; // Example value, replace with real logic
 
   constructor(
     private fb: FormBuilder,
     private transactionService: TransactionService,
     private router: Router,
-    private accountService: AccountService
+    private accountService: AccountService,
+    
   ) {
     this.transferForm = this.fb.group({
       recipientAccount: ['', [Validators.required, Validators.pattern('^BANK[a-zA-Z0-9]{6}$')]],
@@ -143,6 +121,13 @@ export class TransactionComponent implements OnInit {
         console.error('Error loading transactions:', error);
       }
     });
+  }
+   logout() {
+    const confirmed = confirm('Do you want to exit?');
+    if (confirmed) {
+      localStorage.clear();
+      this.router.navigate(['/']);
+    }
   }
 }
 

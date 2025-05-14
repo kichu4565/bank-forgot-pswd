@@ -4,14 +4,17 @@ import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
+  isLoggedIn = false;
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
     if (this.authService.isLoggedIn()) {
       return true;
     }
-    // Remove all navigation history and redirect to login
     this.router.navigate(['/login'], { replaceUrl: true });
     return false;
+  }
+  loggedIn(): void{
+    this.isLoggedIn=true
   }
 } 

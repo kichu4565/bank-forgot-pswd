@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +15,7 @@ export class ProfileComponent implements OnInit {
   error = '';
   accountNumber = '';
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit(): void {
     this.accountNumber = localStorage.getItem('accountNumber') || '';
@@ -29,6 +31,13 @@ export class ProfileComponent implements OnInit {
           this.isLoading = false;
         }
       });
+    }
+  }
+  logout() {
+    const confirmed = confirm('Do you want to exit?');
+    if (confirmed) {
+      localStorage.clear();
+      this.router.navigate(['/']);
     }
   }
 }
