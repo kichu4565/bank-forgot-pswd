@@ -22,8 +22,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -45,10 +46,18 @@ public class SecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeHttpRequests()
+            .requestMatchers("/api/auth/**").permitAll() // ✅ Allow all auth-related endpoints
+
             .requestMatchers(
-                "/api/auth/login",
-                "/api/accounts/create"
-            ).permitAll()
+    "/api/auth/**", // covers login, register, forgot, reset, etc.
+    "/api/accounts/create",
+    "/api/statements/*/download",
+    "/swagger-ui/**",
+    "/v3/api-docs/**",
+    "/swagger-ui.html"
+).permitAll()
+
+
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
@@ -78,6 +87,19 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+    @Bean
+public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/**")
+                .allowedOrigins("http://localhost:4200")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*");
+        }
+    };
+}
+
 
     private static class JwtAuthenticationFilter extends OncePerRequestFilter {
         private final JwtUtil jwtUtil;
@@ -95,7 +117,6 @@ public class SecurityConfig {
                 String accountNumber = jwtUtil.extractUsername(token);
                 if (accountNumber != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     // Create authentication token and set it in SecurityContext
-                    // This is a simplified version - you might want to add more security checks
                     org.springframework.security.authentication.UsernamePasswordAuthenticationToken authToken =
                             new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
                                     accountNumber, null, null);
@@ -114,4 +135,4 @@ public class SecurityConfig {
             return null;
         }
     }
-} 
+}

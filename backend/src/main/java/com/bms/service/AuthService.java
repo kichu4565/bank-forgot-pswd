@@ -5,4 +5,6 @@ import com.bms.dto.LoginResponse;
 
 public interface AuthService {
     LoginResponse authenticate(LoginRequest request);
+    boolean resetPassword(String accountNumber, String newPassword);
+
 } 

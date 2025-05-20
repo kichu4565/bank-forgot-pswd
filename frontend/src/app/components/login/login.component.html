@@ -1,51 +1,66 @@
 <div class="login-container">
   <div class="login-card">
-    <h1 class="welcome-title">Cloud<span class="highlight">Vault</span></h1>
-    <p class="welcome-p">Welcome back! Please login to your account.</p>
+    <div class="login-header">
+      <h1 class="welcome-title">Cloud<span class="highlight">Vault</span></h1>
+      <h2 class="welcome-p">Welcome back!</h2>
+      <p class="login-p">Please login to your account.</p>
+    </div>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <label for="accountNumber">Account Number</label>
-      <input
-        type="text"
-        id="accountNumber"
-        formControlName="accountNumber"
-        placeholder="Your account number"
-      />
-      <div class="error" *ngIf="accNo?.invalid && (accNo?.dirty || accNo?.touched)">
-        <div *ngIf="accNo?.errors?.['required']">Account number is required</div>
-        <div *ngIf="accNo?.errors?.['pattern']">Must be in format: BANKXXXXXX</div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Account Number -->
+      <div class="form-group">
+        <div class="input-wrapper" [ngClass]="{'input-error': accNo?.invalid && (accNo?.dirty || accNo?.touched)}">
+          <span class="input-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="36" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+</svg></span>
+          <input
+            type="text"
+            id="accountNumber"
+            formControlName="accountNumber"
+            placeholder="Enter your account number"
+            class="input-field"
+          />
+        </div>
+        <div class="error" *ngIf="accNo?.invalid && (accNo?.dirty || accNo?.touched)">
+          <div *ngIf="accNo?.errors?.['required']">Account number is required</div>
+          <div *ngIf="accNo?.errors?.['pattern']">Must be in format: BANKXXXXXX</div>
+        </div>
       </div>
 
-      <label for="password">Password</label>
-      <div class="password-wrapper">
-        <input
-          [type]="showPassword ? 'text' : 'password'"
-          id="password"
-          placeholder="Your password"
-          formControlName="password"
-        />
-        <button type="button" class="toggle-password" (click)="togglePassword()">
-          {{ showPassword ? '👁️' : '👁️‍🗨️' }}
-        </button>
-      </div>
-      <div class="error" *ngIf="pwd?.invalid && (pwd?.dirty || pwd?.touched)">
-        <div *ngIf="pwd?.errors?.['required']">Password is required</div>
-        <div *ngIf="pwd?.errors?.['minlength']">Min 6 characters</div>
-      </div>
-
-      <div class="forgot">
-        <a routerLink="/forgot">Forgot your password?</a>
+      <!-- Password -->
+      <div class="form-group">
+        <div class="input-wrapper" [ngClass]="{'input-error': pwd?.invalid && (pwd?.dirty || pwd?.touched)}">
+          <span class="input-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="36" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 0a4 4 0 0 1 4 4v2.05a2.5 2.5 0 0 1 2 2.45v5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 13.5v-5a2.5 2.5 0 0 1 2-2.45V4a4 4 0 0 1 4-4m0 1a3 3 0 0 0-3 3v2h6V4a3 3 0 0 0-3-3"/>
+</svg></span>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            placeholder="Enter your password"
+            formControlName="password"
+            class="input-field"
+          />
+          <button type="button" class="toggle-password" (click)="togglePassword()">
+            {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+          </button>
+        </div>
+        <div class="error" *ngIf="pwd?.invalid && (pwd?.dirty || pwd?.touched)">
+          <div *ngIf="pwd?.errors?.['required']">Password is required</div>
+          <div *ngIf="pwd?.errors?.['minlength']">Min 6 characters</div>
+        </div>
       </div>
 
       <button type="submit" class="signin-btn" [disabled]="!loginForm.valid || loading">
         <span *ngIf="loading" class="spinner"></span>
-        <b *ngIf="!loading">Sign In</b>
+        <b *ngIf="!loading">Login</b>
       </button>
-    </form>
 
-    <div class="create-account">
-      Don’t have an account? <a routerLink="/register">Create an account</a>
-    </div>
+      <div class="links">
+        <a routerLink="/forgot">Forgot Password?</a>
+        <span>•</span>
+        <a routerLink="/register">Create Account</a>
+      </div>
+    </form>
 
     <div *ngIf="error" class="alert alert-danger">
       {{ error }}

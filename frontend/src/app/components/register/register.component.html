@@ -24,7 +24,7 @@
       <div class="section-title">Contact Info</div>
       <div class="input-group">
         <span class="input-icon"><i class="fas fa-phone"></i></span>
-        <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control" placeholder="Mobile Number (Exactly 10 digits)" />
+        <input type="number" id="phoneNumber" formControlName="phoneNumber" class="form-control" placeholder="Mobile Number (Exactly 10 digits)" />
       </div>
       <div class="error-message" *ngIf="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)">Enter a valid 10-digit phone number</div>
 

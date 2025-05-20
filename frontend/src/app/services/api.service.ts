@@ -38,9 +38,6 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/auth/login`, credentials);
   }
 
-  // register(userData: any): Observable<any> {
-  //   return this.http.post(`${this.apiUrl}/auth/register`, userData);
-  // }
 
   getAccountBalance(accountNumber: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/accounts/${accountNumber}/balance`);

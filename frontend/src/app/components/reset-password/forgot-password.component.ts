@@ -19,7 +19,7 @@ export class ForgotPasswordComponent {
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.forgotForm = this.fb.group({
 accNo: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]{10}$/)]],
-      newPass: ['', [Validators.required, Validators.minLength(8)]],
+      newPass: ['', [Validators.required, Validators.minLength(8),Validators.pattern(/^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/)]],
       confirmPass: ['', [Validators.required, Validators.minLength(8)]],
       enteredToken: ['']
     });
@@ -27,9 +27,7 @@ accNo: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]{10}$/)]],
   tokenGenerated: boolean = false;
 
 goToLogin() {
-  // Navigate to login (assuming router is available)
-  // You can customize this based on your routing logic
-  window.location.href = '/login'; // OR use Angular router if available
+  window.location.href = '/login'; 
 }
 
 
@@ -55,6 +53,7 @@ goToLogin() {
     this.errorMessage = '';
     this.successMessage = `Token generated: ${this.token}`;
   }
+  
 
   resetPassword() {
     this.errorMessage = '';
@@ -76,12 +75,14 @@ goToLogin() {
     }
 
     this.authService.resetPassword(accountNumber, newPassword).subscribe({
-      next: () => {
-        this.successMessage = 'Password reset successfully!';
-      },
-      error: () => {
-        this.errorMessage = 'Failed to reset password.';
-      }
-    });
+  next: (res) => {
+    this.successMessage = res.message || 'Password reset successfully!';
+  },
+  error: (err) => {
+    console.error('Reset error:', err);
+    this.errorMessage = err.error?.message || 'Failed to reset password.';
+  }
+});
+
   }
 }

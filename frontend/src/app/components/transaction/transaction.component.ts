@@ -30,7 +30,7 @@ export class TransactionComponent implements OnInit {
     
   ) {
     this.transferForm = this.fb.group({
-      recipientAccount: ['', [Validators.required, Validators.pattern('^BANK[a-zA-Z0-9]{6}$')]],
+recipientAccount: ['', [Validators.required, Validators.pattern('^BANK[A-Z0-9]{6}$')]],
       amount: ['', [Validators.required, Validators.min(1)]],
       description: ['', Validators.required]
     });
@@ -123,7 +123,7 @@ export class TransactionComponent implements OnInit {
     });
   }
    logout() {
-    const confirmed = confirm('Do you want to exit?');
+    let confirmed = confirm('Do you want to exit?');
     if (confirmed) {
       localStorage.clear();
       this.router.navigate(['/']);

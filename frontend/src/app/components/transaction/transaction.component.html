@@ -36,7 +36,6 @@
   </div>
 
   <div class="transaction-grid">
-    <!-- Transfer Form -->
     <div class="transaction-card">
       <h2>New Transfer</h2>
       <form [formGroup]="transferForm" (ngSubmit)="onSubmit()" class="transfer-form">
@@ -80,9 +79,21 @@
           </button>
         </div>
       </form>
+
+      <div *ngIf="showConfirmation" class="confirmation-dialog">
+        <div class="confirmation-content">
+          <h2>Transfer Successful!</h2>
+          <div class="confirmation-details">
+            <p><strong>Transaction ID:</strong> {{ confirmationDetails?.transactionId }}</p>
+            <p><strong>Recipient Account:</strong> {{ confirmationDetails?.recipientAccount }} {{ recipientName }}</p>
+            <p><strong>Amount:</strong> ₹{{ confirmationDetails?.amount | number:'1.2-2' }}</p>
+            <p><strong>Description:</strong> {{ confirmationDetails?.description }}</p>
+          </div>
+          <button class="btn btn-success" (click)="showConfirmation = false">Okay</button>
+        </div>
+      </div>
     </div>
 
-    <!-- Transaction History -->
     <div class="transaction-card">
       <h2>Recent Transactions</h2>
       <div class="transaction-filters">
@@ -215,17 +226,17 @@
     }
   }
   .confirmation-dialog {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
   .confirmation-content {
     background: #fff;
     border-radius: 16px;

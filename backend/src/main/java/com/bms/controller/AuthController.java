@@ -23,6 +23,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import com.bms.dto.RefreshTokenRequest;
+import com.bms.dto.ResetPasswordRequest;
+import java.util.Map;
+import java.util.HashMap;
+
+
 
 
 @RestController
@@ -56,6 +61,22 @@ public class AuthController {
         LoginResponse response = authService.authenticate(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    @PostMapping("/reset-password")
+public ResponseEntity<Map<String, String>> resetPassword(@RequestBody ResetPasswordRequest request) {
+    Map<String, String> response = new HashMap<>();
+    boolean result = authService.resetPassword(request.getAccountNumber(), request.getNewPassword());
+
+    if (result) {
+        response.put("message", "Password reset successfully");
+        return ResponseEntity.ok(response);
+    } else {
+        response.put("message", "New password must not match the current password or account not found.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+}
+
+
+
 
     @Operation(
         summary = "Logout from the system",

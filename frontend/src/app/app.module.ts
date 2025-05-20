@@ -7,7 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -26,7 +26,9 @@ import { StatementComponent } from './components/statement/statement.component';
 import { SupportComponent } from './components/support/support.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthInterceptor } from './services/auth.interceptor';
-import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ForgotPasswordComponent } from './components/reset-password/forgot-password.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,14 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     MatDatepickerModule,
     MatInputModule,
     MatFormFieldModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+            positionClass: 'toast-top-center',
+            timeOut: 60000,
+      closeButton: true,
+
+}),
   ],
   providers: [
     ApiService,

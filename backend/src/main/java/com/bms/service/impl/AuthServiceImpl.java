@@ -31,6 +31,22 @@ public class AuthServiceImpl implements AuthService {
     private RefreshTokenService refreshTokenService;
 
     @Override
+    public boolean resetPassword(String accountNumber, String newPassword) {
+        return accountRepository.findByAccountNumber(accountNumber).map(account -> {
+            //  Check if new password matches the current one
+            if (passwordUtil.verifyPassword(newPassword, account.getPassword())) {
+                return false; // Do not allow reuse of old password
+            }
+
+            // ✅ Hash and save the new password
+            String hashedPassword = passwordUtil.hashPassword(newPassword);
+            account.setPassword(hashedPassword);
+            accountRepository.save(account);
+            return true;
+        }).orElse(false); // account not found
+    }
+
+    @Override
     public LoginResponse authenticate(LoginRequest request) {
         // Find account by account number
         Account account = accountRepository.findByAccountNumber(request.getAccountNumber())
@@ -60,4 +76,4 @@ public class AuthServiceImpl implements AuthService {
                 refreshToken.getExpiryDate().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime()
         );
     }
-} 
+}

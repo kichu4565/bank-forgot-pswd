@@ -48,9 +48,10 @@ export class AuthService {
     });
   }
 
-  resetPassword(accNo: string, newPassword: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/reset-password`, { accNo, newPassword });
-  }
+  resetPassword(accountNumber: string, newPassword: string): Observable<{ message: string }> {
+  return this.http.post<{ message: string }>(`${this.apiUrl}/reset-password`, { accountNumber, newPassword });
+}
+
 
   getToken(): string | null {
     return localStorage.getItem('token');

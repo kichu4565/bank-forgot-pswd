@@ -39,16 +39,16 @@
           <div class="amount"><span class="big-balance">₹{{ displayedBalance | number:'1.2-2' }}</span></div>
         </div>
         <!-- Quick Actions -->
-        <div class="dashboard-card">
+        <div class="dashboard-card" >
           <h3>Quick Actions</h3>
-          <div class="quick-actions-vertical">
+          <div class="quick-actions-vertical" >
             <button class="btn btn-primary full-width" routerLink="/transaction">Transfer Money</button>
             <button class="btn btn-success full-width" routerLink="/fixed-deposit">Create Fixed Deposit</button>
             <button class="btn btn-primary full-width" routerLink="/statement">View Statement</button>
           </div>
         </div>
         <!-- Recent Transactions -->
-        <div class="dashboard-card">
+        <!-- <div class="dashboard-card">
           <h3>Recent Transactions</h3>
           <div class="transaction-history">
             <div *ngIf="transactions.length === 0" class="no-transactions">
@@ -64,7 +64,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- Account Summary -->
         <div class="dashboard-card">
           <h3>Account Summary</h3>

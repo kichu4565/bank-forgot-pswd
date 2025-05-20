@@ -10,29 +10,32 @@ import { TransactionComponent } from './components/transaction/transaction.compo
 import { FixedDepositComponent } from './components/fixed-deposit/fixed-deposit.component';
 import { StatementComponent } from './components/statement/statement.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { AuthGuard } from './services/auth.guard';
 import { SupportComponent } from './components/support/support.component';
-import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ForgotPasswordComponent } from './components/reset-password/forgot-password.component';
 
+import { AuthGuard } from './services/auth.guard';
+import { GuestGuard } from './services/guest.guard';
 
 const routes: Routes = [
-  { path: '', component: WelcomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'log', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'reg', component: RegisterComponent },
+  // routes for guests only
+  { path: '', component: WelcomeComponent, canActivate: [GuestGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [GuestGuard] },
+
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'transaction', component: TransactionComponent, canActivate: [AuthGuard] },
   { path: 'fixed-deposit', component: FixedDepositComponent, canActivate: [AuthGuard] },
   { path: 'statement', component: StatementComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'loading', component: LoadingComponent, canActivate: [AuthGuard] },
+
   { path: 'support', component: SupportComponent },
-  { path: 'forgot', component: ForgotPasswordComponent } 
+  { path: 'forgot', component: ForgotPasswordComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
