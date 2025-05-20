@@ -1,6 +1,6 @@
-/* Navbar Styles (Consistent with Home Component) */
+/* Navbar Styles */
 .navbar {
-  background: linear-gradient(90deg, #2196f3 0%, #43b96f 100%);
+  background: linear-gradient(90deg, rgb(33, 150, 243) 0%, rgb(67, 185, 111) 100%);
   box-shadow: 0 2px 8px rgba(33, 150, 243, 0.08);
   padding: 0.5rem 0;
   position: sticky;
@@ -22,7 +22,6 @@
   margin: 0 auto;
   padding: 0 2rem;
   gap: 4.5rem;
-  
 }
 
 .logo-flex {
@@ -30,21 +29,17 @@
   align-items: center;
   gap: 1.2rem;
   position: relative;
-  
 }
-
 
 .logo-image {
   height: 240px;
   width: auto;
   object-fit: contain;
   position: absolute;
-  top: -120px; /* Pull it upwards */
-  left: 1.5rem; /* Adjust horizontal position if needed */
-  z-index: 10;
+  top: -120px;
   left: -150px;
+  z-index: 10;
 }
-
 
 .nav-links {
   list-style: none;
@@ -54,8 +49,7 @@
   padding: 0;
   align-items: center;
   position: relative;
-  left: 90px
-  
+  left: 90px;
 }
 
 .nav-links li {
@@ -63,7 +57,7 @@
 }
 
 .nav-links a {
-  color: #fff;
+  color: rgb(255, 255, 255);
   text-decoration: none;
   font-weight: 500;
   font-size: 1.1rem;
@@ -84,14 +78,13 @@
   transform: scale(1.1);
 }
 
-/* Ensure Fixed Deposit is always on one line */
 .nav-links a[routerLink="/fixed-deposit"] {
   white-space: nowrap;
 }
 
 .logout-btn {
-  background: linear-gradient(90deg, #ff5858 0%, #f09819 100%);
-  color: #fff;
+  background: linear-gradient(90deg, rgb(255, 88, 88) 0%, rgb(240, 152, 25) 100%);
+  color: rgb(255, 255, 255);
   border: none;
   border-radius: 30px;
   padding: 0.55rem 1.5rem 0.55rem 1.2rem;
@@ -120,7 +113,7 @@
 }
 
 .logout-btn:hover {
-  background: linear-gradient(90deg, #f09819 0%, #ff5858 100%);
+  background: linear-gradient(90deg, rgb(240, 152, 25) 0%, rgb(255, 88, 88) 100%);
   transform: translateY(-2px) scale(1.04);
   filter: brightness(1.08);
 }
@@ -147,7 +140,7 @@
 .nav-toggle-label span:before,
 .nav-toggle-label span:after {
   display: block;
-  background: #fff;
+  background: rgb(255, 255, 255);
   height: 4px;
   width: 28px;
   border-radius: 2px;
@@ -184,7 +177,7 @@
 @media (max-width: 700px) {
   .nav-links {
     flex-direction: column;
-    background: linear-gradient(90deg, #2196f3 0%, #43b96f 100%);
+    background: linear-gradient(90deg, rgb(33, 150, 243) 0%, rgb(67, 185, 111) 100%);
     position: absolute;
     top: 60px;
     left: 0;
@@ -217,18 +210,19 @@
   margin: 2rem auto;
   padding: 0 2rem;
 }
+
 .transaction-header {
   text-align: center;
   margin-bottom: 2rem;
 }
 
 .transaction-header h1 {
-  color: var(--primary-color);
+  color: rgb(33, 150, 243);
   margin-bottom: 0.5rem;
 }
 
 .transaction-header p {
-  color: #666;
+  color: rgb(102, 102, 102);
   font-size: 1.1rem;
 }
 
@@ -240,19 +234,15 @@
 }
 
 .transaction-card {
-  background: var(--card-bg);
+  background: rgb(255, 255, 255);
   border-radius: 16px;
-  box-shadow: var(--card-shadow);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
   padding: 2rem;
   transition: box-shadow 0.2s, transform 0.2s;
 }
-/* .transaction-card:hover {
-  box-shadow: 0 8px 32px rgba(33, 150, 243, 0.13);
-  transform: translateY(-4px) scale(1.01);
-} */
 
 .transaction-card h2 {
-  color: var(--primary-color);
+  color: rgb(33, 150, 243);
   margin-bottom: 1.5rem;
   font-size: 1.3rem;
 }
@@ -271,20 +261,21 @@
 
 .form-group label {
   font-weight: 500;
-  color: var(--text-color);
+  color: rgb(51, 51, 51);
 }
 
 .form-control {
-  background: var(--input-bg);
-  border: 1px solid var(--input-border);
+  background: rgb(245, 248, 250);
+  border: 1px solid rgb(224, 230, 237);
   border-radius: 6px;
   padding: 0.75rem 1rem;
   font-size: 1rem;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
+
 .form-control:focus {
   outline: none;
-  border-color: var(--input-focus);
+  border-color: rgb(33, 150, 243);
   box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.08);
 }
 
@@ -303,8 +294,8 @@ textarea.form-control {
   font-size: 1rem;
   font-weight: 600;
   border-radius: 6px;
-  background: var(--primary-color);
-  color: #fff;
+  background: rgb(33, 150, 243);
+  color: rgb(255, 255, 255);
   border: none;
   box-shadow: 0 2px 8px rgba(33, 150, 243, 0.08);
   transition: background 0.2s, box-shadow 0.2s, color 0.2s;
@@ -313,19 +304,24 @@ textarea.form-control {
   align-items: center;
   gap: 0.5rem;
 }
+
 .btn-primary {
-  background: var(--primary-color);
+  background: rgb(33, 150, 243);
 }
+
 .btn-success {
-  background: var(--secondary-color);
+  background: rgb(67, 185, 111);
 }
+
 .btn:hover, .btn:focus {
-  background: #1769aa;
-  color: #fff;
+  background: rgb(23, 105, 170);
+  color: rgb(255, 255, 255);
 }
+
 .btn-success:hover, .btn-success:focus {
-  background: #2e8b57;
+  background: rgb(46, 139, 87);
 }
+
 .btn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
@@ -342,15 +338,17 @@ textarea.form-control {
 
 .transaction-item {
   padding: 1rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgb(238, 238, 238);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   transition: background 0.2s;
 }
+
 .transaction-item:hover {
-  background: #f6fcfb;
+  background: rgb(246, 252, 251);
 }
+
 .transaction-item:last-child {
   border-bottom: none;
 }
@@ -369,44 +367,51 @@ textarea.form-control {
 
 .transaction-date {
   font-size: 0.9rem;
-  color: #666;
+  color: rgb(102, 102, 102);
   font-weight: normal;
 }
 
 .transaction-description {
   font-size: 0.9rem;
-  color: #666;
+  color: rgb(102, 102, 102);
 }
 
 .transaction-amount {
   font-weight: bold;
   font-size: 1.1rem;
 }
+
 .transaction-amount.credit {
-  color: var(--success-color);
+  color: rgb(92, 184, 92);
 }
+
 .transaction-amount.debit {
-  color: var(--danger-color);
+  color: rgb(217, 83, 79);
 }
 
 .no-transactions {
   text-align: center;
-  color: #666;
+  color: rgb(102, 102, 102);
   padding: 2rem;
 }
 
 .error-message {
-  color: var(--danger-color);
-  font-size: 0.9rem;
-  margin-top: 0.25rem;
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 15px;
+  font-size: 14px;
+  text-align: center;
 }
 
 /* Loading Spinner */
 .spinner {
   width: 20px;
   height: 20px;
-  border: 2px solid var(--light-gray);
-  border-top: 2px solid var(--primary-color);
+  border: 2px solid rgb(204, 204, 204);
+  border-top: 2px solid rgb(33, 150, 243);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -418,7 +423,7 @@ textarea.form-control {
 
 /* Success Message */
 .success-message {
-  background-color: var(--success-color);
+  background-color: rgb(92, 184, 92);
   color: white;
   padding: 1rem;
   border-radius: 4px;
@@ -432,6 +437,7 @@ textarea.form-control {
     grid-template-columns: 1fr;
   }
 }
+
 @media (max-width: 600px) {
   .transaction-card {
     padding: 1rem;
@@ -440,4 +446,171 @@ textarea.form-control {
     flex-direction: column;
     gap: 0.5rem;
   }
+}
+
+/* Additional Styles from the HTML */
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+.responsive-table th, .responsive-table td {
+  border: 1px solid rgb(221, 221, 221);
+  padding: 8px;
+  text-align: center;
+}
+.responsive-table th {
+  background: rgb(242, 242, 242);
+}
+.debit { color: rgb(217, 83, 79); }
+.credit { color: rgb(92, 184, 92); }
+@media (max-width: 600px) {
+  .responsive-table, .responsive-table thead, .responsive-table tbody, .responsive-table th, .responsive-table td, .responsive-table tr {
+    display: block;
+  }
+  .responsive-table tr { margin-bottom: 1rem; }
+  .responsive-table td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+  .responsive-table td:before {
+    position: absolute;
+    left: 0;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: bold;
+    text-align: left;
+    content: attr(data-label);
+  }
+}
+.recipient-name-container {
+  margin: 12px 0;
+  padding: 4px 0;
+}
+
+.recipient-name-card {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(145deg, rgb(248, 249, 250), rgb(255, 255, 255));
+  border: 1px solid rgb(233, 236, 239);
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.recipient-name-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.recipient-name-card i {
+  font-size: 24px;
+  color: rgb(92, 184, 92);
+  margin-right: 16px;
+}
+
+.recipient-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.recipient-details .label {
+  font-size: 0.85rem;
+  color: rgb(108, 117, 125);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.recipient-details .value {
+  color: rgb(44, 62, 80);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 576px) {
+  .recipient-name-card {
+    padding: 10px 12px;
+  }
+  
+  .recipient-name-card i {
+    font-size: 20px;
+    margin-right: 12px;
+  }
+
+  .recipient-details .value {
+    font-size: 1rem;
+  }
+}
+.confirmation-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.confirmation-content {
+  background: rgb(255, 255, 255);
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  text-align: center;
+  min-width: 320px;
+  max-width: 90vw;
+  animation: pop-in 0.3s cubic-bezier(.68,-0.55,.27,1.55);
+}
+.confirmation-content h2 {
+  color: rgb(92, 184, 92);
+  margin-bottom: 1rem;
+}
+.confirmation-details {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+.btn-success {
+  background: linear-gradient(90deg, rgb(54, 209, 196) 0%, rgb(92, 184, 92) 100%);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-success:hover {
+  background: linear-gradient(90deg, rgb(92, 184, 92) 0%, rgb(54, 209, 196) 100%);
+}
+@keyframes pop-in {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.recipient-suggestion {
+  margin-top: 8px;
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  color: #1976d2;
+}
+
+.account-not-registered {
+  margin-top: 8px;
+  background: #fdecea;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  color: #dc3545;
 }

@@ -3,6 +3,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -16,9 +17,9 @@ export class ForgotPasswordComponent {
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private accountService: AccountService) {
     this.forgotForm = this.fb.group({
-accNo: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]{10}$/)]],
+      accNo: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]{10}$/)]],
       newPass: ['', [Validators.required, Validators.minLength(8),Validators.pattern(/^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/)]],
       confirmPass: ['', [Validators.required, Validators.minLength(8)]],
       enteredToken: ['']
@@ -48,10 +49,24 @@ goToLogin() {
   }
 
   generateToken() {
-    this.token = Math.random().toString(36).toUpperCase().replace(".","");
-    this.tokenGenerated = true;
     this.errorMessage = '';
-    this.successMessage = `Token generated: ${this.token}`;
+    this.successMessage = '';
+    const accountNumber = this.accNo?.value.trim();
+    console.log('Checking account number:', accountNumber);
+    // Check if account exists before proceeding
+    this.accountService.getAccountDetails(accountNumber).subscribe({
+      next: (details) => {
+        // Account exists, proceed to generate token (your existing logic here)
+        this.token = Math.random().toString(36).toUpperCase().replace(".","");
+        this.tokenGenerated = true;
+        this.errorMessage = '';
+        this.successMessage = `Token generated: ${this.token}`;
+      },
+      error: (err) => {
+        console.error('Account details error:', err);
+        this.errorMessage = err.error?.message || 'Account number not found. Please check and try again.';
+      }
+    });
   }
   
 

@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { AccountService, AccountDetails } from '../../services/account.service';
 import { TransactionService, Transaction } from '../../services/transaction.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-home',
   standalone: false,
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   showBalance = false;

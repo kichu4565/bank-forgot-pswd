@@ -45,30 +45,33 @@ public class StatementServiceImpl implements StatementService {
     public ByteArrayOutputStream generateStatement(String accountNumber, StatementRequest request) 
             throws AccountNotFoundException, InvalidDateRangeException, PDFGenerationException {
         
-        // Validate account
-        Account account = accountRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
-
-        // Validate date range
-        validateDateRange(request.getFromDate(), request.getToDate());
-
-        // Get transactions
-        LocalDateTime startDate = request.getFromDate().atStartOfDay();
-        LocalDateTime endDate = request.getToDate().atTime(23, 59, 59);
-        
-        List<Transaction> transactions = transactionRepository
-                .findBySourceAccountNumberOrDestinationAccountNumberAndTimestampBetween(
-                        accountNumber, accountNumber, startDate, endDate
-                );
-
-        // Get FD details
-        List<FixedDeposit> fixedDeposits = fixedDepositRepository
-                .findByAccount_AccountNumber(accountNumber);
-
         try {
+            // Validate account
+            Account account = accountRepository.findByAccountNumber(accountNumber)
+                    .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+
+            // Validate date range
+            validateDateRange(request.getFromDate(), request.getToDate());
+
+            // Get transactions
+            LocalDateTime startDate = request.getFromDate().atStartOfDay();
+            LocalDateTime endDate = request.getToDate().atTime(23, 59, 59);
+            
+            List<Transaction> transactions = transactionRepository
+                    .findBySourceAccountNumberOrDestinationAccountNumberAndTimestampBetween(
+                            accountNumber, accountNumber, startDate, endDate
+                    );
+
+            // Get FD details
+            List<FixedDeposit> fixedDeposits = fixedDepositRepository
+                    .findByAccount_AccountNumber(accountNumber);
+
             return generatePDF(account, transactions, fixedDeposits, request);
+        } catch (AccountNotFoundException | InvalidDateRangeException e) {
+            throw e;
         } catch (Exception e) {
-            throw new PDFGenerationException("Failed to generate PDF, please try again later");
+            e.printStackTrace();
+            throw new PDFGenerationException("Failed to generate PDF: " + e.getMessage());
         }
     }
 
@@ -96,27 +99,33 @@ public class StatementServiceImpl implements StatementService {
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
 
-        // Add header
-        addHeader(document, account, request);
+        try {
+            // Add header
+            addHeader(document, account, request);
 
-        // Add account summary
-        addAccountSummary(document, account);
+            // Add account summary
+            addAccountSummary(document, account);
 
-        // Add FD summary
-        addFDSummary(document, fixedDeposits);
+            // Add FD summary
+            addFDSummary(document, fixedDeposits);
 
-        // Add transaction table
-        if (transactions.isEmpty()) {
-            document.add(new Paragraph("No transactions found for the selected period."));
-        } else {
-            addTransactionTable(document, transactions);
+            // Add transaction table
+            if (transactions.isEmpty()) {
+                document.add(new Paragraph("No transactions found for the selected period."));
+            } else {
+                addTransactionTable(document, transactions, account);
+            }
+
+            // Add footer
+            addFooter(document);
+
+            document.close();
+            return outputStream;
+        } catch (Exception e) {
+            e.printStackTrace();
+            document.close();
+            throw new PDFGenerationException("Failed to generate PDF: " + e.getMessage());
         }
-
-        // Add footer
-        addFooter(document);
-
-        document.close();
-        return outputStream;
     }
 
     private void addHeader(Document document, Account account, StatementRequest request) {
@@ -176,38 +185,50 @@ public class StatementServiceImpl implements StatementService {
         document.add(new Paragraph("\n"));
     }
 
-    private void addTransactionTable(Document document, List<Transaction> transactions) {
-        document.add(new Paragraph("Transaction History:")
-                .setBold());
-        
-        Table table = new Table(5);
-        table.setWidth(500);
-
-      
-        table.addHeaderCell(new Cell().add(new Paragraph("Date")));
-        table.addHeaderCell(new Cell().add(new Paragraph("Description")));
-        table.addHeaderCell(new Cell().add(new Paragraph("Debit")));
-        table.addHeaderCell(new Cell().add(new Paragraph("Credit")));
-        table.addHeaderCell(new Cell().add(new Paragraph("Balance")));
-
-       
-        for (Transaction transaction : transactions) {
-            table.addCell(new Cell().add(new Paragraph(
-                    transaction.getTimestamp().format(DATE_TIME_FORMATTER))));
-            table.addCell(new Cell().add(new Paragraph(transaction.getDescription())));
+    private void addTransactionTable(Document document, List<Transaction> transactions, Account account) {
+        try {
+            document.add(new Paragraph("Transaction History:")
+                    .setBold());
             
-            if (transaction.getAmount().compareTo(transaction.getSourceAccountBalance()) < 0) {
-                table.addCell(new Cell().add(new Paragraph("₹" + transaction.getAmount())));
-                table.addCell(new Cell().add(new Paragraph("")));
-            } else {
-                table.addCell(new Cell().add(new Paragraph("")));
-                table.addCell(new Cell().add(new Paragraph("₹" + transaction.getAmount())));
+            Table table = new Table(5);
+            table.setWidth(500);
+
+            table.addHeaderCell(new Cell().add(new Paragraph("Date")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Description")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Debit")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Credit")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Balance")));
+
+            String currentAccountNumber = account.getAccountNumber();
+
+            for (Transaction transaction : transactions) {
+                try {
+                    table.addCell(new Cell().add(new Paragraph(
+                            transaction.getTimestamp().format(DATE_TIME_FORMATTER))));
+                    table.addCell(new Cell().add(new Paragraph(transaction.getDescription())));
+                    
+                    // If the account is the source account, it's a debit
+                    if (transaction.getSourceAccountNumber().equals(currentAccountNumber)) {
+                        table.addCell(new Cell().add(new Paragraph("₹" + transaction.getAmount())));
+                        table.addCell(new Cell().add(new Paragraph("")));
+                    } else if (transaction.getDestinationAccountNumber().equals(currentAccountNumber)) {
+                        // If the account is the destination account, it's a credit
+                        table.addCell(new Cell().add(new Paragraph("")));
+                        table.addCell(new Cell().add(new Paragraph("₹" + transaction.getAmount())));
+                    }
+                    
+                    table.addCell(new Cell().add(new Paragraph("₹" + transaction.getSourceAccountBalance())));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new PDFGenerationException("Error processing transaction: " + e.getMessage());
+                }
             }
-            
-            table.addCell(new Cell().add(new Paragraph("₹" + transaction.getSourceAccountBalance())));
-        }
 
-        document.add(table);
+            document.add(table);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PDFGenerationException("Error creating transaction table: " + e.getMessage());
+        }
     }
 
     private void addFooter(Document document) {

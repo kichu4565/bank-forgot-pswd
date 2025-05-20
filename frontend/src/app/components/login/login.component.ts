@@ -59,7 +59,11 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         },
         error: (error) => {
-          this.error = error.error?.message || 'Login failed. Please check your credentials.';
+          this.error =
+            error.error?.message ||
+            error.error?.error ||
+            error.statusText ||
+            'Login failed. Please check your credentials.';
           this.loading = false;
         }
       });

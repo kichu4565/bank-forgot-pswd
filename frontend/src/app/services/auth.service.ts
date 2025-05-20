@@ -31,6 +31,9 @@ export class AuthService {
           if (response.token) {
             localStorage.setItem('token', response.token);
             localStorage.setItem('accountNumber', credentials.accountNumber);
+
+            // Optional: Store entire user object
+            localStorage.setItem('user', JSON.stringify({ accountNumber: credentials.accountNumber }));
           }
           if (response.refreshToken) {
             localStorage.setItem('refreshToken', response.refreshToken);
@@ -49,9 +52,11 @@ export class AuthService {
   }
 
   resetPassword(accountNumber: string, newPassword: string): Observable<{ message: string }> {
-  return this.http.post<{ message: string }>(`${this.apiUrl}/reset-password`, { accountNumber, newPassword });
-}
-
+    return this.http.post<{ message: string }>(`${this.apiUrl}/reset-password`, {
+      accountNumber,
+      newPassword
+    });
+  }
 
   getToken(): string | null {
     return localStorage.getItem('token');
@@ -79,9 +84,16 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('refreshTokenExpiry');
+    localStorage.removeItem('user');
   }
 
   isLoggedIn(): boolean {
     return !!this.getToken();
+  }
+
+  // ✅ Added method to fix your error
+  getUser(): { accountNumber: string } | null {
+    const userData = localStorage.getItem('user');
+    return userData ? JSON.parse(userData) : null;
   }
 }

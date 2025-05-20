@@ -51,6 +51,7 @@ public class SecurityConfig {
             .requestMatchers(
     "/api/auth/**", // covers login, register, forgot, reset, etc.
     "/api/accounts/create",
+    "/api/accounts/*",
     "/api/statements/*/download",
     "/swagger-ui/**",
     "/v3/api-docs/**",

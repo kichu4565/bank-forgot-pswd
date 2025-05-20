@@ -21,6 +21,7 @@ export class TransactionComponent implements OnInit {
   recipientName: string | null = null;
   showConfirmation: boolean = false;
   confirmationDetails: any = null;
+  accountNotRegistered: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -37,15 +38,20 @@ recipientAccount: ['', [Validators.required, Validators.pattern('^BANK[A-Z0-9]{6
 
     this.transferForm.get('recipientAccount')?.valueChanges.subscribe(accountNumber => {
       this.recipientName = null;
+      this.accountNotRegistered = false;
       if (this.transferForm.get('recipientAccount')?.valid) {
         this.accountService.getAccountDetails(accountNumber).subscribe({
           next: (details) => {
             this.recipientName = details.accountHolderName;
+            this.accountNotRegistered = false;
           },
           error: () => {
             this.recipientName = null;
+            this.accountNotRegistered = true;
           }
         });
+      } else {
+        this.accountNotRegistered = false;
       }
     });
   }
@@ -91,7 +97,16 @@ recipientAccount: ['', [Validators.required, Validators.pattern('^BANK[A-Z0-9]{6
           this.loadTransactions();
         },
         error: (error) => {
-          this.error = error.error?.message || 'Transfer failed. Please try again.';
+          if (error.status === 404) {
+            this.error = 'Recipient account not found. Please check the account number.';
+          } else if (error.status === 400) {
+            this.error = error.error?.message || 'Invalid transfer request. Please check your input.';
+          } else if (error.status === 500) {
+            this.error = error.error?.message || 'An error occurred while processing your transfer. Please try again.';
+          } else {
+            this.error = 'Transfer failed. Please try again.';
+          }
+          this.loading = false;
         },
         complete: () => {
           this.loading = false;

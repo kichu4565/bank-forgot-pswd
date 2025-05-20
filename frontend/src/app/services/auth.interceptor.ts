@@ -10,6 +10,10 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService, private router: Router) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // Do not intercept login or refresh-token requests
+    if (req.url.includes('/login') || req.url.includes('/refresh-token')) {
+      return next.handle(req);
+    }
     const token = this.authService.getToken();
     let cloned = req;
     if (token) {
